@@ -11,8 +11,11 @@ Frederik Hardervig
 
 The barrier of entry into quantum computing can be intimidating, and thus gamifying tools to help train the fundamentals might be a good way engage newer audiences that might know nothing about linear algebra, such as those in high school, early university, or those who simply haven't pursued such topics.
 
-To achieve this, I have built a memory game where players have to match a circuit to its corresponding state, represented through a qSphere. The circuits are randomly generated using IonQ's simulator or QPU backend.
+To achieve this, I have built a memory game where players have to match a circuit to its corresponding state, represented through a qSphere. The circuits are randomly generated using IonQ's simulator or QPU backend. To do this, I built the circuit below:
+![circuit generatot](https://github.com/iQuHACK/2021_Ducktectives/blob/main/Pictures/Generator%20circuit.JPG)
 
+This might seem a bit messy, but I've included a short description below. The two sub-routines that require the most explanation is the ones for q4 and q5, and for q8 and q9. For q4 and q5, since we're operating with 3 qubits, we wish to generate 00, 01, and 10, with equal probability, ie. $$|\psi$$
+![explanation](https://github.com/iQuHACK/2021_Ducktectives/blob/main/Pictures/Explanation.png)
 ## Elements and rules
 
 When "Play" is pressed, 6 circuit-qsphere pairs are generated and randomly placed unto cards. The play can at most flip two of them at a time, and must identify the pairs by thinking about the state each circuit will generate and where these are located. Once all pairs have been identified, the game ends.
