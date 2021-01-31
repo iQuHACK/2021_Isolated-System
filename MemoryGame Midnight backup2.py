@@ -50,6 +50,7 @@ class Game():
     def __init__(self):
         #goto_introscreen
         self.gate_n = 2
+        self.qbts_n = 2
         self.bg_col = (204, 102, 0)
         self.OGcardback = pygame.image.load('Pictures/duck.png').convert()
         self.cardback = None
@@ -60,9 +61,11 @@ class Game():
         
         
         again = button(screen_width/10, screen_height/20, 'Play Again?', self)
-        quitbut = button(300, 550, 'Quit?', self)
+        quitbut = button(300, 640, 'Quit?', self)
         m_gates = button(200, 460, 'Add gates', self)
         l_gates = button(400, 460, 'Remove gates', self)
+        m_qbts = button(200, 550, 'Add qubit', self)
+        l_qbts = button(400, 550, 'Remove qubit', self)
 
 
         run = True
@@ -73,13 +76,13 @@ class Game():
             
             screen.fill(self.bg_col)
             if again.draw_button(pos):
-                print('Again')
+                print('PLAY!')
                 self.goto_play()
             if quitbut.draw_button(pos):
                 print('Quit')
                 run = False
             if m_gates.draw_button(pos):
-                print('Quit')
+                print("Added qubit")
                 self.gate_n += 1
             if l_gates.draw_button(pos):
                 if self.gate_n > 2:
@@ -87,10 +90,26 @@ class Game():
                     self.gate_n -= 1
                 else:
                     print('At least 2 gates required')
+            if m_qbts.draw_button(pos):
+                if self.qbts_n < 3:
+                    print("Added qubit")
+                    self.qbts_n += 1
+                else:
+                    print("At most 3 qubits")
+            if l_qbts.draw_button(pos):
+                if self.qbts_n > 2:
+                    print('Removed qubit')
+                    self.qbts_n -= 1
+                else:
+                    print('At least 2 qubits')
             
             text_img = font.render("Gates: " + str(self.gate_n), True, black)
             text_len = text_img.get_width()
             screen.blit(text_img, (630, 490))
+            
+            text_img = font.render("Qubits: " + str(self.qbts_n), True, black)
+            text_len = text_img.get_width()
+            screen.blit(text_img, (630, 580))
         
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -113,7 +132,7 @@ class Game():
         self.cardback = pygame.transform.scale(self.OGcardback, (card_width, card_height))
         
         #Easy mode
-        pictures = create_pictures(int(card_x*card_y/2), 2, self.gate_n)
+        pictures = create_pictures(int(card_x*card_y/2), self.qbts_n, self.gate_n)
         #Harder mode
         #pictures = create_pictures(int(card_x*card_y/2), 3, 5)
         
