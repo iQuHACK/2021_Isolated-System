@@ -1,8 +1,3 @@
-
-_Organizer's note:_ this project won the **creativity award** in iQuHACK 2020.
-
----
-
 # GateState Memory: Train your memory and circuit intuition!
 
 Frederik Hardervig
@@ -14,7 +9,8 @@ The barrier of entry into quantum computing can be intimidating, and thus gamify
 To achieve this, I have built a memory game where players have to match a circuit to its corresponding state, represented through a qSphere. The circuits are randomly generated using IonQ's simulator or QPU backend. To do this, I built the circuit below:
 ![circuit generatot](https://github.com/iQuHACK/2021_Ducktectives/blob/main/Pictures/Generator%20circuit.JPG)
 
-This might seem a bit messy, but I've included a short description below. The two sub-routines that require the most explanation is the ones for q4 and q5, and for q8 and q9. For q4 and q5, since we're operating with 3 qubits, we wish to generate 00, 01, and 10, with equal probability, ie. $$|\psi$$
+This might seem a bit messy, but I've included a short description below. The two sub-routines that require the most explanation is the ones for q4 and q5, and for q8 and q9. For q4 and q5, since we're operating with 3 qubits, we wish to generate 00, 01, and 10, with equal probability, ie.![img](http://www.sciweavers.org/tex2img.php?eq=%7C%5Cpsi%5Crangle%3D%5Cfrac%7B%7C00%5Crangle%2B%7C01%5Crangle%2B%7C10%5Crangle%7D%7B%5Csqrt%7B3%7D%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0), but NOT 11. We essentially need to create a state where the qubits cannot be 1 at the same time. Thus we firstly observe that each should be 0 two out of three times. Thus we first rotate q4 around the y-axis by 2sin^-1(1/\sqrt(3)) which we've obtained after a bit of algebra. Then we do an X-flip to instead be 1 two thirds of the time when controlled to apply a hadamard to q5. Finally we revert back. Thus, when q4=0, the controlled gate has been triggered, and q5 is either 0 or 1, leading to 10 or 00 one third of the time respectively, while if q4=1 (which happens one third of the time), the hadarmard was not triggered and we obtain 01.
+
 ![explanation](https://github.com/iQuHACK/2021_Ducktectives/blob/main/Pictures/Explanation.png)
 ## Elements and rules
 
