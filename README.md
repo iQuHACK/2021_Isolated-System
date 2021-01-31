@@ -6,7 +6,7 @@ Frederik Hardervig
 
 The barrier of entry into quantum computing can be intimidating, and thus gamifying tools to help train the fundamentals might be a good way engage newer audiences that might know nothing about linear algebra, such as those in high school, early university, or those who simply haven't pursued such topics.
 
-To achieve this, I have built a memory game where players have to match a circuit to its corresponding state, represented through a qSphere. The circuits are randomly generated using IonQ's simulator or QPU backend. 
+To achieve this, I have built a memory game where players have to match a circuit to its corresponding state, represented through a qSphere. The circuits are randomly generated using IBM's qasm simulator. 
 
 ## Elements and rules
 
