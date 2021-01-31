@@ -49,6 +49,7 @@ class Game():
     
     def __init__(self):
         #goto_introscreen
+        self.gate_n = 2
         self.bg_col = (204, 102, 0)
         self.OGcardback = pygame.image.load('Pictures/duck.png').convert()
         self.cardback = None
@@ -59,7 +60,9 @@ class Game():
         
         
         again = button(screen_width/10, screen_height/20, 'Play Again?', self)
-        quitbut = button(300, 460, 'Quit?', self)
+        quitbut = button(300, 550, 'Quit?', self)
+        m_gates = button(200, 460, 'Add gates', self)
+        l_gates = button(400, 460, 'Remove gates', self)
 
 
         run = True
@@ -75,7 +78,19 @@ class Game():
             if quitbut.draw_button(pos):
                 print('Quit')
                 run = False
-        
+            if m_gates.draw_button(pos):
+                print('Quit')
+                self.gate_n += 1
+            if l_gates.draw_button(pos):
+                if self.gate_n > 2:
+                    print('Removed gate')
+                    self.gate_n -= 1
+                else:
+                    print('At least 2 gates required')
+            
+            text_img = font.render("Gates: " + str(self.gate_n), True, black)
+            text_len = text_img.get_width()
+            screen.blit(text_img, (630, 490))
         
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -97,7 +112,10 @@ class Game():
         buffer_y = int(screen_height/card_y*0.1)
         self.cardback = pygame.transform.scale(self.OGcardback, (card_width, card_height))
         
-        pictures = create_pictures(int(card_x*card_y/2), 2, 2)
+        #Easy mode
+        pictures = create_pictures(int(card_x*card_y/2), 2, self.gate_n)
+        #Harder mode
+        #pictures = create_pictures(int(card_x*card_y/2), 3, 5)
         
         cards = []
         no = -1
@@ -314,41 +332,9 @@ class card():
         #create pygame Rect object for the button
         button_rect = Rect(self.x, self.y, self.width, self.height)
         
-            
-        #check mouseover and clicked conditions
-        if closed and not self.flipped:
-            pygame.draw.rect(screen, self.button_col[self.flipped], button_rect)
-            #s = pygame.Surface((self.width,self.height))  # the size of your rect
-            #s.set_alpha(100)                # alpha level
-            #s.fill((100,100,100))           # this fills the entire surface
-            #screen.blit(s, (self.x, self.y)) 
-            #self.clicked = False
-        elif button_rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1:
-                self.clicked = True
-                pygame.draw.rect(screen, self.click_col, button_rect)
-            elif pygame.mouse.get_pressed()[0] == 0 and self.clicked == True:
-                self.clicked = False
-                self.flipped = (self.flipped + 1)%2
-                action = True
-            else:
-                pygame.draw.rect(screen, self.button_col[self.flipped], button_rect)
-                s = pygame.Surface((self.width,self.height))  # the size of your rect
-                s.set_alpha(50)                # alpha level
-                s.fill((255,255,255))           # this fills the entire surface
-                screen.blit(s, (self.x, self.y)) 
-        else:
-            pygame.draw.rect(screen, self.button_col[self.flipped], button_rect)
-            self.clicked = False
-		
-		#add shading to button
-        pygame.draw.line(screen, white, (self.x, self.y), (self.x + self.width, self.y), 2)
-        pygame.draw.line(screen, white, (self.x, self.y), (self.x, self.y + self.height), 2)
-        pygame.draw.line(screen, black, (self.x, self.y + self.height), (self.x + self.width, self.y + self.height), 2)
-        pygame.draw.line(screen, black, (self.x + self.width, self.y), (self.x + self.width, self.y + self.height), 2)
-
         #add text to button
         if self.flipped:
+            pygame.draw.rect(screen, self.button_col[self.flipped], button_rect)
             screen.blit(self.scaled_diagram, (self.x, self.y))
         else:
             screen.blit(self.parent.cardback, (self.x, self.y))
@@ -358,6 +344,33 @@ class card():
                 s.fill((100,100,100))           # this fills the entire surface
                 screen.blit(s, (self.x, self.y)) 
                 self.clicked = False
+            
+        #check mouseover and clicked conditions
+        if button_rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.clicked = True
+                s = pygame.Surface((self.width,self.height))  # the size of your rect
+                s.set_alpha(100)                # alpha level
+                s.fill((100,100,100))           # this fills the entire surface
+                screen.blit(s, (self.x, self.y)) 
+            elif pygame.mouse.get_pressed()[0] == 0 and self.clicked == True:
+                self.clicked = False
+                self.flipped = (self.flipped + 1)%2
+                action = True
+            else:
+                s = pygame.Surface((self.width,self.height))  # the size of your rect
+                s.set_alpha(50)                # alpha level
+                s.fill((255,255,255))           # this fills the entire surface
+                screen.blit(s, (self.x, self.y)) 
+        else:
+            #pygame.draw.rect(screen, self.button_col[self.flipped], button_rect)
+            self.clicked = False
+		
+		#add shading to button
+        pygame.draw.line(screen, white, (self.x, self.y), (self.x + self.width, self.y), 2)
+        pygame.draw.line(screen, white, (self.x, self.y), (self.x, self.y + self.height), 2)
+        pygame.draw.line(screen, black, (self.x, self.y + self.height), (self.x + self.width, self.y + self.height), 2)
+        pygame.draw.line(screen, black, (self.x + self.width, self.y), (self.x + self.width, self.y + self.height), 2)
                 
         return action
         
@@ -422,5 +435,5 @@ class button():
             screen.blit(text_img, (self.x + int(self.width / 2) - int(text_len / 2), self.y + 25))
         return action
 
-#Run the game
+#Run game
 Game()
