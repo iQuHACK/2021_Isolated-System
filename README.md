@@ -27,7 +27,7 @@ Note that running the jupyter notebook on remote machines will not work since Py
 
 ## Final notes:
 ### Future improvements
-* Buttons to control difficulty
+* Buttons to control difficulty (e.g. amount of cards, extended gate-set)
 * Better scaling of picture on cards
 * Crop qsphere to be larger on cards
 * Show the matching pair for 2 seconds before removing
